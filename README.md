@@ -11,7 +11,10 @@ This projects goal is to provide a simple api that allows the addition of backpr
 - [ ] Support Buffer strategy
 - [ ] Support Error Strategy
 
-## Initial API Example
+## Getting Started
+To get started pull the code from pypi with a ```pip install rxpy_backpressure``` the project can be found [here](https://pypi.org/project/rxpy-backpressure/)
+
+### Initial API Example
 
 A example of usage of the API
 
