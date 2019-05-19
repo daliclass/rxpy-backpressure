@@ -19,6 +19,8 @@ class MockObserver(Observer):
         self.on_next_mock(value)
 
     def on_error(self, error):
+        if self.include_sleeps:
+            time.sleep(0.25)
         self.on_error_mock(error)
 
     def on_completed(self):

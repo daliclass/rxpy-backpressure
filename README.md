@@ -5,7 +5,7 @@ Back pressure strategies for use with RxPy
 This projects goal is to provide a simple api that allows the addition of backpressure strategys with RxPy. 
 
 ## Project Roadmap
-- [ ] Support Latest strategy
+- [X] Support Latest strategy
 - [ ] Develop a small application to show the use of the library
 - [ ] Support Drop strategy
 - [ ] Support Buffer strategy
