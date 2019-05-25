@@ -7,7 +7,7 @@ This projects goal is to provide a simple api that allows the addition of backpr
 ## Project Roadmap
 - [X] Support Latest strategy
 - [X] Develop a small application to show the use of the library
-- [ ] Support Drop strategy
+- [X] Support Drop strategy
 - [ ] Support Buffer strategy
 - [ ] Support Error Strategy
 
@@ -38,6 +38,19 @@ image_observable
 
 If you would like to quickly get started with the library a runnable
 example can be found here [rxpy-backpressure-example](https://github.com/daliclass/rxpy-backpressure-example)
+
+### Strategies
+
+#### Latest
+Latest strategy will remember the next most recent message to process 
+and will call the observer with it when the observer has finished 
+processing its current message.
+
+#### Drop
+Drop strategy accepts a cache_size, the strategy will remember the most 
+recent messages and remove older messages from the cache. The strategy 
+guarantees that the oldest messages in the cache are passed to the 
+observer first.
 
 ## Considerations
 This project supports python 3.6+ as as [rxpy](https://github.com/ReactiveX/RxPY)
