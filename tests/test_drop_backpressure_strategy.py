@@ -2,7 +2,6 @@ from unittest import TestCase
 from unittest.mock import call
 
 from rxpy_backpressure.backpressure import BackPressure
-
 from rxpy_backpressure.drop import DropBackPressureStrategy
 from rxpy_backpressure.observer import Observer
 from tests.mocks.mock_observer import MockObserver
@@ -39,7 +38,7 @@ class TestDropBackPressureStrategy(TestCase):
     """
     def test_when_on_next_called_and_wrapped_is_processing_then_drop_messages_when_cache_is_full(self):
         mock_observer: MockObserver = MockObserver(include_sleeps=True)
-        drop: DropBackPressureStrategy = DropBackPressureStrategy(mock_observer, cache_size=3)
+        drop: DropBackPressureStrategy = BackPressure.DROP(mock_observer, cache_size=3)
         messages = [
             {'id': 1, 'payload': "OK"},
             {'id': 2, 'payload': "OK"},

@@ -4,13 +4,6 @@ Back pressure strategies for use with RxPy
 ## Goals
 This projects goal is to provide a simple api that allows the addition of backpressure strategies with RxPy. 
 
-## Project Roadmap
-- [X] Support Latest strategy
-- [X] Develop a small application to show the use of the library
-- [X] Support Drop strategy
-- [ ] Support Buffer strategy
-- [ ] Support Error Strategy
-
 ## Getting Started
 To get started pull the code from pypi with a ```pip install rxpy_backpressure``` the project can be found [here](https://pypi.org/project/rxpy-backpressure/)
 
@@ -51,6 +44,11 @@ Drop strategy accepts a cache_size, the strategy will remember the most
 recent messages and remove older messages from the cache. The strategy 
 guarantees that the oldest messages in the cache are passed to the 
 observer first.
+
+#### Buffer
+Buffer strategy has a unbounded cache and will pass all messages to its 
+consumer in the order it received them beware of Memory leaks due to a 
+build up of messages. 
 
 ## Considerations
 This project supports python 3.6+ as as [rxpy](https://github.com/ReactiveX/RxPY)

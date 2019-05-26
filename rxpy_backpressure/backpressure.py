@@ -1,4 +1,4 @@
-from rxpy_backpressure.drop import wrap_observer_with_drop_strategy
+from rxpy_backpressure.drop import wrap_observer_with_drop_strategy, wrap_observer_with_buffer_strategy
 from rxpy_backpressure.latest import wrap_observer_with_latest_strategy
 
 
@@ -16,3 +16,9 @@ class BackPressure:
         :param cache_size: int = 10 is default
     """
     DROP = wrap_observer_with_drop_strategy
+
+    """
+        Buffer strategy has a unbounded cache and will pass all messages to its consumer in the order it received them
+        beware of Memory leaks due to a build up of messages. 
+    """
+    BUFFER = wrap_observer_with_buffer_strategy

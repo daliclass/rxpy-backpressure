@@ -1,4 +1,4 @@
-from typing import List, Any
+from typing import List, Any, Optional
 
 from rxpy_backpressure.function_runner import thread_function_runner
 from rxpy_backpressure.locks import Lock, BooleanLock
@@ -11,7 +11,7 @@ class DropBackPressureStrategy(Observer):
         self.wrapped_observer: Observer = wrapped_observer
         self.__function_runner = thread_function_runner
         self.__lock: Lock = BooleanLock()
-        self.__cache_size: int = cache_size
+        self.__cache_size: Optional[int] = cache_size
         self.__message_cache: List = []
         self.__error_cache: List = []
 
@@ -46,7 +46,7 @@ class DropBackPressureStrategy(Observer):
             self.__lock.unlock()
 
     def __update_cache(self, cache: List, item: Any):
-        if len(cache) < self.__cache_size:
+        if self.__cache_size is None or len(cache) < self.__cache_size:
             cache.append(item)
         else:
             cache.pop(0)
@@ -61,3 +61,7 @@ class DropBackPressureStrategy(Observer):
 
 def wrap_observer_with_drop_strategy(observer: Observer, cache_size: int = 10) -> Observer:
     return DropBackPressureStrategy(observer, cache_size=cache_size)
+
+
+def wrap_observer_with_buffer_strategy(observer: Observer) -> Observer:
+    return DropBackPressureStrategy(observer, cache_size=None)
