@@ -1,6 +1,5 @@
-from unittest.mock import MagicMock
-
 import time
+from unittest.mock import MagicMock
 
 from rxpy_backpressure.observer import Observer
 
