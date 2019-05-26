@@ -51,7 +51,7 @@ consumer in the order it received them beware of Memory leaks due to a
 build up of messages. 
 
 ## Considerations
-This project supports python 3.6+ as as [rxpy](https://github.com/ReactiveX/RxPY)
-3.0.0+ is support this is not support ealier versions. If there is a 
-case to support previous versions this will be considered however the 
-typing introduced in python 3.6 is very nice to produce a self documenting API. 
+This project supports python 3.6+ as [rxpy](https://github.com/ReactiveX/RxPY)
+3.0.0+ does not support earlier versions. If there is a case to support 
+previous versions this can be discussed however the typing introduced in 
+python 3.6 is very nice. 
