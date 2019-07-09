@@ -6,7 +6,6 @@ from rxpy_backpressure.observer import Observer
 
 
 class DropBackPressureStrategy(Observer):
-
     def __init__(self, wrapped_observer: Observer, cache_size: int):
         self.wrapped_observer: Observer = wrapped_observer
         self.__function_runner = thread_function_runner
@@ -59,7 +58,9 @@ class DropBackPressureStrategy(Observer):
         return self.__lock.is_locked()
 
 
-def wrap_observer_with_drop_strategy(observer: Observer, cache_size: int = 10) -> Observer:
+def wrap_observer_with_drop_strategy(
+    observer: Observer, cache_size: int = 10
+) -> Observer:
     return DropBackPressureStrategy(observer, cache_size=cache_size)
 
 

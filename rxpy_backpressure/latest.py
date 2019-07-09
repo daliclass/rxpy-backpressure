@@ -6,7 +6,6 @@ from rxpy_backpressure.observer import Observer
 
 
 class LatestBackPressureStrategy(Observer):
-
     def __init__(self, wrapped_observer: Observer):
         self.wrapped_observer: Observer = wrapped_observer
         self.__function_runner = thread_function_runner

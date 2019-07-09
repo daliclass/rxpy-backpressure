@@ -5,7 +5,6 @@ from rxpy_backpressure.observer import Observer
 
 
 class MockObserver(Observer):
-
     def __init__(self, include_sleeps: bool = False):
         self.on_next_mock = MagicMock()
         self.on_completed_mock = MagicMock()

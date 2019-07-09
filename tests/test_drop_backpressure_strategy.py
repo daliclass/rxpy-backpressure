@@ -8,7 +8,6 @@ from tests.mocks.mock_observer import MockObserver
 
 
 class TestDropBackPressureStrategy(TestCase):
-
     def test_when_on_complete_called_then_defer_to_wrapped_observer(self):
         mock_observer: MockObserver = MockObserver()
         drop: Observer = DropBackPressureStrategy(mock_observer, cache_size=1)
@@ -27,7 +26,7 @@ class TestDropBackPressureStrategy(TestCase):
     def test_when_on_next_called_and_wrapped_is_not_processing_then_call_wrapped(self):
         mock_observer: MockObserver = MockObserver()
         drop: Observer = DropBackPressureStrategy(mock_observer, cache_size=1)
-        message: dict = {'id': 1, 'payload': "OK"}
+        message: dict = {"id": 1, "payload": "OK"}
 
         drop.on_next(message)
         mock_observer.on_next_mock.assert_called_once_with(message)
@@ -36,22 +35,25 @@ class TestDropBackPressureStrategy(TestCase):
         Integration style tests to check that the asynchronous behaviour of this strategy
         works as expected.
     """
-    def test_when_on_next_called_and_wrapped_is_processing_then_drop_messages_when_cache_is_full(self):
+
+    def test_when_on_next_called_and_wrapped_is_processing_then_drop_messages_when_cache_is_full(
+        self
+    ):
         mock_observer: MockObserver = MockObserver(include_sleeps=True)
         drop: DropBackPressureStrategy = BackPressure.DROP(mock_observer, cache_size=3)
         messages = [
-            {'id': 1, 'payload': "OK"},
-            {'id': 2, 'payload': "OK"},
-            {'id': 3, 'payload': "OK"},
-            {'id': 4, 'payload': "OK"},
-            {'id': 5, 'payload': "OK"},
-            {'id': 6, 'payload': "OK"},
-            {'id': 7, 'payload': "OK"},
-            {'id': 8, 'payload': "OK"},
-            {'id': 9, 'payload': "OK"},
-            {'id': 10, 'payload': "OK"},
-            {'id': 11, 'payload': "OK"},
-            {'id': 12, 'payload': "OK"}
+            {"id": 1, "payload": "OK"},
+            {"id": 2, "payload": "OK"},
+            {"id": 3, "payload": "OK"},
+            {"id": 4, "payload": "OK"},
+            {"id": 5, "payload": "OK"},
+            {"id": 6, "payload": "OK"},
+            {"id": 7, "payload": "OK"},
+            {"id": 8, "payload": "OK"},
+            {"id": 9, "payload": "OK"},
+            {"id": 10, "payload": "OK"},
+            {"id": 11, "payload": "OK"},
+            {"id": 12, "payload": "OK"},
         ]
 
         drop.on_next(messages[0])
@@ -74,27 +76,37 @@ class TestDropBackPressureStrategy(TestCase):
         while drop.is_locked():
             pass  # wait to become unlocked
 
-        mock_observer.on_next_mock.assert_has_calls([
-            call(messages[0]), call(messages[3]), call(messages[4]), call(messages[5]),
-            call(messages[6]), call(messages[9]), call(messages[10]), call(messages[11]),
-        ])
+        mock_observer.on_next_mock.assert_has_calls(
+            [
+                call(messages[0]),
+                call(messages[3]),
+                call(messages[4]),
+                call(messages[5]),
+                call(messages[6]),
+                call(messages[9]),
+                call(messages[10]),
+                call(messages[11]),
+            ]
+        )
 
-    def test_when_on_error_called_and_wrapped_is_processing_then_drop_messages_when_cache_is_full(self):
+    def test_when_on_error_called_and_wrapped_is_processing_then_drop_messages_when_cache_is_full(
+        self
+    ):
         mock_observer: MockObserver = MockObserver(include_sleeps=True)
         drop: DropBackPressureStrategy = BackPressure.DROP(mock_observer, cache_size=3)
         messages = [
-            {'id': 1, 'payload': "OK"},
-            {'id': 2, 'payload': "OK"},
-            {'id': 3, 'payload': "OK"},
-            {'id': 4, 'payload': "OK"},
-            {'id': 5, 'payload': "OK"},
-            {'id': 6, 'payload': "OK"},
-            {'id': 7, 'payload': "OK"},
-            {'id': 8, 'payload': "OK"},
-            {'id': 9, 'payload': "OK"},
-            {'id': 10, 'payload': "OK"},
-            {'id': 11, 'payload': "OK"},
-            {'id': 12, 'payload': "OK"}
+            {"id": 1, "payload": "OK"},
+            {"id": 2, "payload": "OK"},
+            {"id": 3, "payload": "OK"},
+            {"id": 4, "payload": "OK"},
+            {"id": 5, "payload": "OK"},
+            {"id": 6, "payload": "OK"},
+            {"id": 7, "payload": "OK"},
+            {"id": 8, "payload": "OK"},
+            {"id": 9, "payload": "OK"},
+            {"id": 10, "payload": "OK"},
+            {"id": 11, "payload": "OK"},
+            {"id": 12, "payload": "OK"},
         ]
 
         drop.on_error(messages[0])
@@ -117,7 +129,15 @@ class TestDropBackPressureStrategy(TestCase):
         while drop.is_locked():
             pass  # wait to become unlocked
 
-        mock_observer.on_error_mock.assert_has_calls([
-            call(messages[0]), call(messages[3]), call(messages[4]), call(messages[5]),
-            call(messages[6]), call(messages[9]), call(messages[10]), call(messages[11]),
-        ])
+        mock_observer.on_error_mock.assert_has_calls(
+            [
+                call(messages[0]),
+                call(messages[3]),
+                call(messages[4]),
+                call(messages[5]),
+                call(messages[6]),
+                call(messages[9]),
+                call(messages[10]),
+                call(messages[11]),
+            ]
+        )

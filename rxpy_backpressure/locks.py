@@ -2,7 +2,6 @@ from abc import abstractmethod
 
 
 class Lock:
-
     @abstractmethod
     def is_locked(self) -> bool:
         return NotImplemented
@@ -17,7 +16,6 @@ class Lock:
 
 
 class BooleanLock(Lock):
-
     def __init__(self):
         self.locked: bool = False
 
