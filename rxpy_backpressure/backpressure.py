@@ -3,6 +3,7 @@ from rxpy_backpressure.drop import (
     wrap_observer_with_buffer_strategy,
 )
 from rxpy_backpressure.latest import wrap_observer_with_latest_strategy
+from rxpy_backpressure.sized_buffer import wrap_observer_with_sized_buffer_strategy
 
 
 class BackPressure:
@@ -26,3 +27,10 @@ class BackPressure:
         beware of Memory leaks due to a build up of messages. 
     """
     BUFFER = wrap_observer_with_buffer_strategy
+
+    """
+        Sized buffer has a fix sized cache, the strategy will perform opposite of Drop and will refuse new messages
+        as long as the buffer is full and will accept them only once the buffer has available space.
+        :param cache_size: int = 50 is default
+    """
+    SIZED_BUFFER = wrap_observer_with_sized_buffer_strategy

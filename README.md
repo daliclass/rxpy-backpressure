@@ -48,7 +48,12 @@ observer first.
 #### Buffer
 Buffer strategy has a unbounded cache and will pass all messages to its 
 consumer in the order it received them beware of Memory leaks due to a 
-build up of messages. 
+build up of messages.
+
+### Sized Buffer
+Sized buffer has a fix sized cache, the strategy will perform opposite of
+Drop and will refuse new messages as long as the buffer is full and will
+accept them only once the buffer has available space.
 
 ## Considerations
 This project supports python 3.6+ as [rxpy](https://github.com/ReactiveX/RxPY)
