@@ -1,12 +1,15 @@
-from time import time
 from typing import List, Any, Optional
 
 from rxpy_backpressure.function_runner import thread_function_runner
 from rxpy_backpressure.locks import Lock, BooleanLock
 from rxpy_backpressure.observer import Observer
+from utils.logging import Logger
+from utils.stats import Counter
 
 
 class SizedBufferBackPressureStrategy(Observer):
+    counter: Counter = Counter()
+
     def __init__(self, wrapped_observer: Observer, cache_size: int):
         self.wrapped_observer: Observer = wrapped_observer
         self.__function_runner = thread_function_runner
@@ -14,21 +17,16 @@ class SizedBufferBackPressureStrategy(Observer):
         self.__cache_size: Optional[int] = cache_size
         self.__message_cache: List = []
         self.__error_cache: List = []
-        self.__timestamp_last_cached: float = time()
-        self.__total_wait_time_sec: float = 0
-        self.__number_processed_events: int = 0
-        self.__number_dropped_events: int = 0
+        self.__logger = Logger()
 
+    @counter.processed_event
+    @counter.time
     def on_next(self, message):
         if self.__lock.is_locked():
             if not self.__update_cache(self.__message_cache, message):
-                self.__timestamp_last_cached = time()
-                self.__number_dropped_events += 1
-                print("value not added, buffer full")
+                self.__logger.warning("value not added, buffer full")
         else:
             self.__lock.lock()
-            self.__total_wait_time_sec += self.__timestamp_last_cached - time()
-            self.__number_processed_events += 1
             self.__function_runner(self, self.__on_next, message)
 
     @staticmethod
@@ -42,7 +40,7 @@ class SizedBufferBackPressureStrategy(Observer):
     def on_error(self, error: any):
         if self.__lock.is_locked():
             if not self.__update_cache(self.__error_cache, error):
-                print("value not added, buffer full")
+                self.__logger.warning("value not added, buffer full")
         else:
             self.__lock.lock()
             self.__function_runner(self, self.__on_error, error)
@@ -55,6 +53,7 @@ class SizedBufferBackPressureStrategy(Observer):
         else:
             self.__lock.unlock()
 
+    @counter.dropped_event
     def __update_cache(self, cache: List, item: Any) -> bool:
         if self.__cache_size is None or len(cache) < self.__cache_size:
             cache.append(item)
